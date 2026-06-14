@@ -130,16 +130,26 @@ async def check_events():
 
                 if line.startswith("PING="):
                     ping_role = line.replace("PING=", "").strip()
-
+                    
             embed = discord.Embed(
-                title=f"⏰ {title}",
-                description="Starts in 5 minutes!",
-                color=discord.Color.red()
+                title="🚨 Event Reminder",
+                description="Event starts in 5 minutes!",
+                color=0xff0000
             )
-
-            # attach flyer image
+            
             if flyer_id and flyer_id in flyers:
-                embed.set_image(url=flyers[flyer_id])
+                image_url = flyers[flyer_id]
+                print("Using flyer:", image_url)
+            
+                await channel.send(
+                    content="@everyone",
+                    embed=embed.set_image(url=image_url)
+                )
+            else:
+                await channel.send(
+                    content="@everyone",
+                    embed=embed
+                )
 
             channel = bot.get_channel(ANNOUNCE_CHANNEL_ID)
 
